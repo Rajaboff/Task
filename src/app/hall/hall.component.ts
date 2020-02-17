@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../main.service';
-import { tick } from '@angular/core/testing';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-hall',
@@ -11,23 +10,15 @@ export class HallComponent implements OnInit {
 
   color;
   colors = ["#025159", "#03A696", "#F28705", "#F25D27", "#F20505", "#024959", "#027373", "#F2B705", "#F29F05", "#F20505", "#F2B999"];
-  
-  constructor(public service: MainService) { }
+
+  constructor() { }
 
   ngOnInit() {
-    let index = 0;
-    this.service.Timing.subscribe(
-      tick => {
-        if(tick%4==0){
-          this.color = this.colors[index%this.colors.length];
-          index++;
-        }
+    let i = interval(1000);
+    i.subscribe(tick => {
+      if (tick % 4 == 0) {
+        this.color = this.colors[tick % this.colors.length];
       }
-    )
+    });
   }
-
-  UpdateBG(){
-    
-  }
-
 }

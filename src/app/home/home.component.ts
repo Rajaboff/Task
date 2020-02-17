@@ -1,29 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../main.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
 
   time;
-  constructor(public service: MainService) { }
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.UpdateTime()
-  }
-
-  UpdateTime()
-  {
-    let i=0;
-    setInterval(()=>{
-      this.time = new Date().toLocaleTimeString();
-
-      this.service.UpdateTime(i)
-      i++;
-    },1000)
-    
+    let inter = interval(1000);
+    inter.subscribe(tick => {this.time = Date.now()});
   }
 }
